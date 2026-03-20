@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken"
 
+
+
 export const getUserFromToken = (req: Request) => {
   const authHeader = req.headers.get("authorization")
 
