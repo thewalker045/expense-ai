@@ -4,7 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation"
 import { useState, Suspense } from "react"
 import axios from "axios"
 
-// 1. Create a component for the content that uses search params
+
 function VerifySignupForm() {
   const params = useSearchParams()
   const email = params.get("email")
