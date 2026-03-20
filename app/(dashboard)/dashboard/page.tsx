@@ -96,7 +96,6 @@ export default function Dashboard() {
       </button>
     </header>
 
-    {/* 🤖 AI Insights Card (Bento Style) */}
     <section className="relative group">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
       <div className="relative bg-[#0d1117] border border-white/10 p-8 rounded-[2rem] space-y-4">

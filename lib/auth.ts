@@ -13,3 +13,4 @@ export const getUserFromToken = (req: Request) => {
     return null
   }
 }
+
