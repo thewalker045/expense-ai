@@ -11,21 +11,19 @@ export async function POST(req: Request) {
 
     const result = expenseSchema.safeParse(body)
 
-    if(!result.success){
-       return Response.json(
+    if (!result.success) {
+      return Response.json(
         { success: false, errors: result.error.flatten().fieldErrors },
         { status: 400 }
       )
     }
-    const { title, amount, category } = body
 
-    if (!title || amount === undefined || amount === null || !category) {
-      return Response.json({ message: "All fields required" }, { status: 400 })
-    }
+    const { title, amount, category } = result.data
 
     const user = getUserFromToken(req) as
       | { userId?: string; id?: string }
       | null
+
     if (!user) {
       return Response.json({ message: "Unauthorized" }, { status: 401 })
     }
@@ -34,13 +32,13 @@ export async function POST(req: Request) {
       title,
       amount: Number(amount),
       category,
-      userId: user.userId || user.id
+      userId: user.userId || user.id,
     })
 
     return Response.json({ success: true, expense })
   } catch (err: unknown) {
+    console.error("Add expense error:", err)
     const message = err instanceof Error ? err.message : "Server error"
     return Response.json({ message }, { status: 500 })
   }
 }
-
