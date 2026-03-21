@@ -1,12 +1,22 @@
 import { connectDB } from "@/lib/db"
 import Expense from "@/models/Expense"
 import { getUserFromToken } from "@/lib/auth"
+import { expenseSchema } from "@/app/schemas/expenseSchema"
 
 export async function POST(req: Request) {
   await connectDB()
 
   try {
     const body = await req.json()
+
+    const result = expenseSchema.safeParse(body)
+
+    if(!result.success){
+       return Response.json(
+        { success: false, errors: result.error.flatten().fieldErrors },
+        { status: 400 }
+      )
+    }
     const { title, amount, category } = body
 
     if (!title || amount === undefined || amount === null || !category) {

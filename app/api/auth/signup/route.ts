@@ -1,3 +1,4 @@
+import { userSchema } from "@/app/schemas/userSchema"
 import { connectDB } from "@/lib/db"
 import { sendMail } from "@/lib/mailer"
 import { generateOTP } from "@/lib/otp"
@@ -6,6 +7,17 @@ import bcrypt from "bcryptjs"
 
 export async function POST(req: Request) {
   await connectDB()
+
+  const body = await req.json()
+
+  const res = userSchema.safeParse(body)
+
+  if (!res.success) {
+    return Response.json(
+      { success: false, errors: res.error.flatten().fieldErrors },
+      { status: 400 }
+    )
+  }
 
   const { email, password } = await req.json()
 
