@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     )
   }
 
-  const { email, password } = await req.json()
+  const { email, password } = res.data
 
   const existing = await User.findOne({ email })
 
