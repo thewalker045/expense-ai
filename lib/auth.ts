@@ -1,18 +1,26 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
+type JwtUser = {
+  userId: string;
+  email: string;
+};
+//we can use jwtUser or any anything we like but for safety we need to use jwt user
 
+export const getUserFromToken = (req: Request): any | null => {
+  const authHeader = req.headers.get("authorization");
 
-export const getUserFromToken = (req: Request) => {
-  const authHeader = req.headers.get("authorization")
+  if (!authHeader) return null;
 
-  if (!authHeader) return null
-
-  const token = authHeader.split(" ")[1]
+  const token = authHeader.split(" ")[1];
 
   try {
-    return jwt.verify(token, process.env.JWT_SECRET!)
-  } catch {
-    return null
-  }
-}
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as any;   
 
+    return decoded;
+  } catch {
+    return null;
+  }
+};

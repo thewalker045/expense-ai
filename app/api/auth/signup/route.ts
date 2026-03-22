@@ -41,7 +41,9 @@ export async function POST(req: Request) {
   }
 
   await User.findOneAndUpdate(
-    { email },
+    {
+       email 
+    },
     {
       email,
       password: hashedPassword,

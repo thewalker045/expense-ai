@@ -8,7 +8,6 @@ import { useState } from "react"
 export default function Signup() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [username, setUsername] = useState("")
     const [loading, setLoading] = useState(false)
 
     const router = useRouter()
@@ -83,7 +82,6 @@ export default function Signup() {
       </button>
     </div>
 
-    {/* Login Redirect */}
     <p className="text-center text-sm text-gray-600">
       Already have an account?{" "}
       <button className="text-emerald-600 font-semibold hover:underline">Log in</button>
