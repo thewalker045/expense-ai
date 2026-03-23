@@ -19,7 +19,7 @@ export default function Home() {
           <a href="#" className="hover:text-white transition-colors">Pricing</a>
         </div>
         <button className="px-5 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium hover:bg-white/10 transition-all">
-          Log In
+          
         </button>
       </nav>
 

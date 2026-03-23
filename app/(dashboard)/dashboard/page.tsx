@@ -1,53 +1,54 @@
-"use client"
+"use client";
 
-import axios from "axios"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import ExpenseChart from "@/components/ChartsandBars";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-  const [expenses, setExpenses] = useState<any[]>([])
-  const [insights, setInsights] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [expenses, setExpenses] = useState<any[]>([]);
+  const [insights, setInsights] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [aiInput, setAiInput] = useState("")
-  const [aiLoading, setAiLoading] = useState(false)
+  const [aiInput, setAiInput] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const getHeaders = () => ({
     Authorization: `Bearer ${localStorage.getItem("token")}`,
-  })
+  });
 
   const fetchExpenses = async () => {
     try {
       const res = await axios.get("/api/expenses/get", {
         headers: getHeaders(),
-      })
+      });
 
-      setExpenses(res.data)
+      setExpenses(res.data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   const handleDelete = async (id: string) => {
     try {
       await axios.delete("/api/expenses/delete", {
         headers: getHeaders(),
         data: { id },
-      })
+      });
 
-      fetchExpenses()
+      fetchExpenses();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleAIExpense = async () => {
-    if (!aiInput) return
+    if (!aiInput) return;
 
     try {
-      setAiLoading(true)
+      setAiLoading(true);
 
       const res = await axios.post(
         "/api/ai/expense",
@@ -55,58 +56,57 @@ export default function Dashboard() {
         {
           headers: getHeaders(),
         }
-      )
+      );
 
-      console.log("AI Saved:", res.data)
+      console.log("AI Saved:", res.data);
 
-      setAiInput("")
-      fetchExpenses()
+      setAiInput("");
+      fetchExpenses();
     } catch (err) {
-      console.log(err)
+      console.log(err);
     } finally {
-      setAiLoading(false)
+      setAiLoading(false);
     }
-  }
+  };
 
   const fetchInsights = async () => {
-    setLoading(true)
+    setLoading(true);
 
     try {
       const summaryRes = await axios.get("/api/expenses/summary", {
         headers: getHeaders(),
-      })
+      });
 
       const aiRes = await axios.post(
         "/api/ai/insights",
         summaryRes.data
-      )
+      );
 
-      setInsights(aiRes.data.insights)
+      setInsights(aiRes.data.insights);
     } catch (err: any) {
-      const data = err?.response?.data
-      const details = data?.details
+      const data = err?.response?.data;
+      const details = data?.details;
 
       const message =
         details?.message ??
         details ??
         data?.message ??
         err?.message ??
-        "AI insights failed"
+        "AI insights failed";
 
-      console.log(err)
-      setInsights(String(message))
+      setInsights(String(message));
     }
 
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    fetchExpenses()
-  }, [])
+    fetchExpenses();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#05070a] text-slate-200 p-6 md:p-10">
-      <div className="max-w-4xl mx-auto space-y-10">
+      <div className="max-w-5xl mx-auto space-y-10">
 
         {/* ✅ Header */}
         <header className="flex justify-between items-end">
@@ -127,7 +127,7 @@ export default function Dashboard() {
           </button>
         </header>
 
-        {/* 🔥 AI INPUT SECTION */}
+        {/* 🔥 AI INPUT */}
         <section className="bg-[#0d1117] border border-white/10 p-6 rounded-2xl space-y-4">
           <h2 className="text-lg font-semibold text-white">
             Add Expense with AI
@@ -178,6 +178,23 @@ export default function Dashboard() {
           </div>
         </section>
 
+        {/* 📊 Charts Section */}
+        <section className="grid md:grid-cols-2 gap-6">
+          <div className="bg-[#0d1117] border border-white/10 p-5 rounded-2xl">
+            <h2 className="text-white font-semibold mb-4">
+              Expense Distribution
+            </h2>
+
+            <div className="w-full h-[250px]">
+              <ExpenseChart />
+            </div>
+          </div>
+
+          <div className="bg-[#0d1117] border border-white/10 p-5 rounded-2xl flex items-center justify-center text-slate-500">
+            More analytics coming...
+          </div>
+        </section>
+
         {/* 💰 Expense List */}
         <section className="space-y-4">
           {expenses.length === 0 ? (
@@ -214,5 +231,5 @@ export default function Dashboard() {
 
       </div>
     </div>
-  )
+  );
 }

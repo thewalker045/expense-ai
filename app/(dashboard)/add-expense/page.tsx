@@ -1,8 +1,8 @@
 "use client"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
+import ExpenseChart from "@/components/ChartsandBars"
 
 export default function AddExpense() {
   const [title, setTitle] = useState("")
@@ -42,7 +42,6 @@ export default function AddExpense() {
       )
 
       console.log("SUCCESS:", res.data)
-
       router.push("/dashboard")
     } catch (err: any) {
       console.log("ERROR:", err.response?.data || err.message)

@@ -7,7 +7,7 @@ export async function GET(req: Request) {
 
   try {
     console.log("i am executing 2");
-    
+
     const user = getUserFromToken(req) as
       | { userId?: string; id?: string }
       | null
@@ -18,7 +18,7 @@ export async function GET(req: Request) {
 
     const expenses = await Expense.find({ userId: user.userId || user.id })
 
-    const categoryWise: Record<string, number> = {}
+  const categoryWise: Record<string, number> = {}
     let total = 0
 
     expenses.forEach((ex) => {
@@ -26,6 +26,8 @@ export async function GET(req: Request) {
       if (!categoryWise[ex.category]) categoryWise[ex.category] = 0
       categoryWise[ex.category] += ex.amount
     })
+
+    
 
     return Response.json({
       success: true,
@@ -37,4 +39,6 @@ export async function GET(req: Request) {
     return Response.json({ message }, { status: 500 })
   }
 }
+
+
 
