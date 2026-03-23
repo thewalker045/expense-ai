@@ -2,7 +2,6 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
-import ExpenseChart from "@/components/ChartsandBars"
 
 export default function AddExpense() {
   const [title, setTitle] = useState("")
